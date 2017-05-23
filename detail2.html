@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<script>window.PointerEvent = void 0</script>
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/swiper-3.3.1.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/animate.css"/>
+		<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+		<script type="text/javascript" src="js/touch.min.js"></script>
+		<script src="js/swiper-3.3.1.jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper.animate1.0.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			html,body{height: 100%;}
+			body{background: #f3f4f6;display: flex;flex-direction: column;}
+			header{background:url(img/car_bg.png);height: 0.87rem;font: 0.36rem/0.87rem "微软雅黑";color: #fff;position: relative;text-align: center;}
+			header a:nth-child(1){width: 0.61rem;height: 0.87rem;background: url(img/houtui.jpg);background-size: cover;position: absolute;left: 0;display: block;}
+			header a:nth-child(2){width: 1.07rem;height: 0.56rem;background: url(img/car.png);background-size: cover;position: absolute;top:0.15rem;right: 0.2rem;}
+			.detail{font: 0.2rem/0.2rem "微软雅黑";}
+			
+		</style>
+	</head>
+	<body>
+		<header>
+			<a class="goback"></a>
+			商品详情
+			<a href="car.html"></a>
+		</header>
+		<section></section>
+	</body>
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript">
+		function GetQueryString(name)
+		{
+		     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}
+		
+		$(".goback").on("tap",function() {
+			window.history.go(-1);
+		})
+		
+		myajax ()
+		function myajax () {
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getGoods.php?callback=?",
+					type:"get",
+					dataType:"JSONP",
+					data:{
+						goodsID:GetQueryString("goodsid")
+					},
+					success:function(data) {
+						
+						console.log(data);
+						console.log(data[0].detail.split("。"));
+						
+						
+						var imgleth=JSON.parse(data[0].goodsBenUrl).length;
+						
+						if (data!=0) {
+							var attr='';
+							for (var i = 0; i<imgleth; i++) {
+								attr+='<p><img src="'+JSON.parse(data[0].goodsBenUrl)[i]+'" style="width:100vw;"/></p>';
+							}
+							
+							for (var n = 0; n < data[0].detail.split("。").length; n++) {
+								attr+='<div class="detail">'+data[0].detail.split("。")[n]+'</div>';
+							}
+							$("section").html(attr);
+						}else{
+							$("section").html("不好意思！数据丢失了，请访问其他的分类！！！！");
+						}
+					}
+				})
+			}
+	</script>
+</html>

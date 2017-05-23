@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="css/reset.css">
+		<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+		<!--<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="js/Ajax.js"></script>-->
+		<script type="text/javascript" src="js/touch.min.js"></script>
+		
+		<style type="text/css">
+			body{background: #f3eff0;}
+			
+			header{background: #a90506;height: 0.89rem;font: 0.36rem/0.89rem "微软雅黑";color: #fff;text-align: center;}
+			section{margin: 0.3rem auto;width: 5.8rem;}
+			section .txt,section .psd{height: 0.87rem;border-radius: 0.07rem;width: 5.8rem;margin-bottom: 0.04rem;font: 0.25rem/0.87rem "微软雅黑";text-indent: 0.2rem;}
+			section .tip{height: 0.46rem;font: 0.3rem/0.46rem "微软雅黑";color: #f00;text-indent: 0.3rem;}
+			.a1{height: 0.4rem;width: 0.4rem;border: 2px #676767 solid;margin-left: 0.2rem;}
+			.a2{height: 0.4rem;margin-left: 0.1rem;font: 0.3rem/0.4rem "微软雅黑";color: #5b5d5c;}
+			.a3{height: 0.4rem;margin-left: 0.5rem;font: 0.3rem/0.4rem "微软雅黑";color: #fe0f52;margin-bottom: 0.5rem;}
+			.dui{background: url(img/dui.png) no-repeat 0 0;background-size: cover;}
+			.login{height: 0.92rem;display: block;width: 5.79rem;border-radius: 0.07rem;background: url(img/login.png);background-size: cover; text-indent:-99rem;margin:0.49rem 0 0.09rem 0;}
+			.regist{height: 0.92rem;display: block;width: 5.79rem;border-radius: 0.07rem;background: url(img/regi.png);text-indent:-99rem;background-size: cover;}
+		</style>
+	</head>
+	<body>
+		<header>开心摇一摇用户</header>
+		
+			<section>
+				<input type="text" placeholder="请输入账户" class="txt"/>
+				<input type="password" placeholder="请输入密码" class="psd"/>
+				<div class="tip"></div>
+				<div class="clear">
+					<a href="###" class="a1 fl"></a>
+					<a href="###" class="a2 fl">显示密码</a>
+					<a href="###" class="a3 fl">忘记密码？</a>
+				</div>
+				<div class="clear">
+					<a href="###" class="a1 fl dui"></a>
+					<a href="###" class="a2 fl">记住密码自动登录</a>
+				</div>
+				<button class="login">登录</button>
+				<button class="regist">注册</button>
+			</section>
+		
+		
+	</body>
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript">
+	
+//		ajaxRequest("post", "js/login.php", true, {
+//      	"user": "lipeng"
+//      }, function (data) {
+//        	
+//        	console.log(data);
+//			
+//  	});
+
+	
+	
+	
+		$(".login").on("tap",function() {
+			if ($(".txt").val()!='' && $(".psd").val()!='') {
+				$.ajax({
+					url:" http://datainfo.duapp.com/shopdata/userinfo.php",
+					type:"get",
+					dataType:"json",
+					data:{
+						status:"login",
+						userID:$(".txt").val(),
+						password:$(".psd").val()
+					},
+					success:function(data) {
+						
+						if (data==0) {
+							$(".txt").val("");
+							$(".psd").val("");
+							$(".tip").html("用户名不存在！")
+						}
+						
+						if (data==2) {
+							$(".txt").val("");
+							$(".psd").val("");
+							$(".tip").html("用户名密码不符！")
+						}
+						
+						if(typeof data=="object"){
+							window.location.href="list.html";
+						}					
+					}
+				})
+				
+			}else{
+				$(".tip").html("输入不能为空，请重新登录！")
+			}
+			
+			
+		})
+		
+		$(".login").on("blur",function() {
+			$(".tip").html("")
+		})
+		
+		$(".regist").on("tap",function() {
+			window.location.href='regist.html';
+		})
+	</script>
+</html>

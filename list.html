@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<script>window.PointerEvent = void 0</script>
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="icons/iconfont.css" />
+		<link rel="stylesheet" href="css/bottom.css" />
+		<style type="text/css">
+			html,body{height: 100%;}
+			body{background: #f3f4f6;display: flex;flex-direction: column;}
+			header{background:url(img/car_bg.png);height: 0.87rem;font: 0.36rem/0.87rem "微软雅黑";color: #fff;position: relative;text-align: center;}
+			header a{width: 1.07rem;height: 0.56rem;background: url(img/car.png);background-size: cover;position: absolute;top:0.15rem;right: 0.2rem;}
+			.list_hd{height: 0.57rem;background: url(img/list_bg.png);position: relative;display: flex;flex-direction: row;}
+			.iconfont{font-size: 0.3rem;padding: 0.13rem 0 0 0.32rem;flex: 1;}
+			.active{color: #fff;}
+			.jian{display: block;width: 0.14rem;height: 0.07rem;background: url(img/jian1.png);background-size: cover;position: absolute;top:0.5rem;left: 0.4rem;}
+			
+			.list_con{flex: 1;overflow: hidden;font: 0.3rem/0.3rem "微软雅黑";color: pink;}
+			.list_con ul{padding: 0.4rem 0.4rem 0 0.35rem;}
+			.list_con li{width: 2.48rem;height: 3.61rem;float: left;}
+			.list_con li:nth-child(odd){float: left;}
+			.list_con li:nth-child(even){float: right;}
+			.list_con li dt{width: 2.46rem;height: 2.46rem;border: 1px #c7c7c9 solid;box-shadow:#000000 0.03rem 0.03rem 0.1rem;}
+			.list_con li img{width: 2.46rem;height: 2.46rem;}
+			.list_con li .p1{font: 0.23rem/0.6rem "微软雅黑";text-align: center;width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: #000;}
+			.list_con li .p2 a:nth-child(1){font: 0.23rem/0.23rem "微软雅黑";color: #d60f14;}
+			.list_con li .p2 a:nth-child(2){font: 0.23rem/0.23rem "微软雅黑";color: #878787;text-decoration: line-through;}
+			footer{height: 0.97rem;}
+		</style>
+	</head>
+	<body>
+		<header>
+			新品上市
+			<a href="car.html"></a>
+		</header>
+		<!--第3个和第12个和第13个不能用-->
+		<ul class="list_hd">
+			<span class="jian"></span>
+			<i class="iconfont active" classID="0">&#xe670;</i>
+			<i class="iconfont " classID="1">&#xe666;</i>
+			<i class="iconfont " classID="2">&#xe67d;</i>
+			<i class="iconfont " classID="3">&#xe66e;</i>
+			<i class="iconfont " classID="4">&#xe66d;</i>
+			<i class="iconfont " classID="5">&#xe677;</i>
+			<i class="iconfont " classID="6">&#xe672;</i>
+			<i class="iconfont " classID="7">&#xe664;</i>
+			<i class="iconfont " classID="8">&#xe675;</i>
+			<i class="iconfont " classID="9">&#xe673;</i>
+		</ul>
+		<div class="list_con">
+			<div class="list_con1">
+				
+			</div>
+		</div>
+		<footer></footer>
+		
+		<div class="dong" style="position: fixed;top: 1.6rem;left:33%;display: none;font-size: 0.4rem;text-align: center;">刷新中.....</div>
+		<div class="dong1" style="position: fixed;top: 7.5rem;left:33%;display: none;font-size: 0.4rem;text-align: center;">加载更多中.....</div>
+	</body>
+	<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+	<script type="text/javascript" src="js/touch.min.js"></script>	
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	
+	<script type="text/javascript">
+		$(function() {
+			
+			$("footer").load("bottom.html",function() {
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getCar.php",
+					type:"get",
+					dataType:"jsonp",
+					data:{
+						userID:"yuanzishan@521"
+					},
+					success:function(data) {
+						var tonumber=0;
+						for (var i = 0; i < data.length; i++) {
+							tonumber+=Number(data[i].number);
+						}
+						
+						if (data) {
+							$(".bottomCom li span").html(tonumber);
+						}else{
+							
+							$(".bottomCom li span").html("0");
+						}
+						
+					}
+				})
+			});
+			
+			var myScroll=0;
+			var timer=0;
+			var indpre=0;
+			var cha=0;
+			myajax(0);
+			
+			
+			function myajax (num) {
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getGoods.php?callback=?",
+					type:"get",
+					dataType:"JSONP",
+					data:{
+						classID:num
+					},
+					success:function(data) {
+						
+						console.log(typeof data);
+						if (data!=0) {
+							var attr='<ul class="clear">';
+							for (var i = 0; i < data.length; i++) {
+								
+								if (data[i].discount=="0") {
+									attr+='<li goodsID="'+data[i].goodsID+'"><dl><dt><img src="'+data[i].goodsListImg+'" /></dt><dd><p class="p1">'+data[i].goodsName+'</p><p class="clear p2"><a href="###" class="fl">￥'+data[i].price+'</a><a href="###" class="fr">￥'+data[i].price+'</a></p></dd></dl></li>';
+								}else{
+									attr+='<li goodsID="'+data[i].goodsID+'"><dl><dt><img src="'+data[i].goodsListImg+'" /></dt><dd><p class="p1">'+data[i].goodsName+'</p><p class="clear p2"><a href="###" class="fl">￥'+(Number(data[i].price)*Number(data[i].discount)/10).toFixed(2)+'</a><a href="###" class="fr">￥'+data[i].price+'</a></p></dd></dl></li>';
+								}
+							}
+							attr+='</ul>';
+							$(".list_con1").html(attr);
+							
+							$(".list_con li").on("tap",function() {
+								window.location.href='detail.html?goodsid='+$(this).attr("goodsid");
+							})
+							
+							
+							
+							myScroll=new IScroll('.list_con');
+							myScroll.refresh();
+						}else{
+							$(".list_con").html("不好意思！数据丢失了，请访问其他的分类！！！！");
+						}
+						
+							
+					}
+					
+					
+				})
+			}
+			
+			
+			function myajax1(num) {
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getGoods.php?callback=?",
+					type:"get",
+					dataType:"JSONP",
+					data:{
+						classID:num
+					},
+					success:function(data) {
+						
+						console.log(typeof data);
+						if (data!=0) {
+							var attr='<ul class="clear">';
+							for (var i = 0; i < data.length; i++) {
+								
+								if (data[i].discount=="0") {
+									attr+='<li goodsID="'+data[i].goodsID+'"><dl><dt><img src="'+data[i].goodsListImg+'" /></dt><dd><p class="p1">'+data[i].goodsName+'</p><p class="clear p2"><a href="###" class="fl">￥'+data[i].price+'</a><a href="###" class="fr">￥'+data[i].price+'</a></p></dd></dl></li>';
+								}else{
+									attr+='<li goodsID="'+data[i].goodsID+'"><dl><dt><img src="'+data[i].goodsListImg+'" /></dt><dd><p class="p1">'+data[i].goodsName+'</p><p class="clear p2"><a href="###" class="fl">￥'+(Number(data[i].price)*Number(data[i].discount)/10).toFixed(2)+'</a><a href="###" class="fr">￥'+data[i].price+'</a></p></dd></dl></li>';
+								}
+							}
+							attr+='</ul>';
+							$(".list_con1").append(attr);
+							
+							$(".list_con li").on("tap",function() {
+								window.location.href='detail.html?goodsid='+$(this).attr("goodsid");
+							})
+							
+							
+							
+							myScroll=new IScroll('.list_con');
+							myScroll.refresh();
+						}else{
+							$(".list_con").html("不好意思！数据丢失了，请访问其他的分类！！！！");
+						}
+						
+							
+					}
+					
+					
+				})
+			}
+			
+			
+			
+			$(".list_hd i").on("tap",function() {
+				$(this).siblings().css("color","#000");
+				$(this).css("color","#fff");
+				
+				cha=$(this).index()-1-indpre;
+				indpre=$(this).index()-1;
+				var step=0.01;
+				var lf=$(".jian")[0].offsetLeft;
+				dingshi ();
+				
+				function dingshi () {
+					clearTimeout(timer);
+					timer=setTimeout(function() {
+						$(".jian")[0].style.left=lf/100+step+'rem';
+						step+=0.01*cha;
+						if(cha>=0){
+							if (step>0.65*cha){
+								clearTimeout(timer);
+							}else{
+								dingshi ();
+							}
+						}else{
+							if (step<0.65*cha){
+								clearTimeout(timer);
+							}else{
+								dingshi ();
+							}
+						}
+					},10)
+				}
+				
+				var cid=$(this).attr("classID");
+				myajax(cid);
+			})
+			
+			$(document).on('touchend',function(){
+				if(myScroll.y>20){
+					var num=Math.floor(Math.random()*7);
+					myajax (num);
+					$('.dong').css('display','none')
+					
+				}
+				if(myScroll.y<myScroll.maxScrollY-30){
+					var num=Math.floor(Math.random()*7);
+					myajax1(num);
+					$('.dong1').css('display','none')
+				}
+			})
+			
+			$(document).on('touchmove',function(){
+				if(myScroll.y>20){
+					$('.dong').css('display','block')
+				}
+				
+				if(myScroll.y<myScroll.maxScrollY-30){
+					$('.dong1').css('display','block')
+				}
+			})
+		})	
+	</script>
+</html>

@@ -1,0 +1,132 @@
+{
+  "index.html": {
+    "resources": [
+      "img/start5.png",
+      "img/start4.png",
+      "img/start2.png",
+      "js/swiper.animate1.0.2.min.js",
+      "img/start6.png",
+      "css/animate.css",
+      "img/start3.png",
+      "list.html",
+      "js/swiper-3.3.1.jquery.min.js",
+      "js/touch.min.js",
+      "js/rem.js",
+      "css/swiper-3.3.1.min.css",
+      "css/reset.css",
+      "js/zepto-1.1.6.min.js"
+    ],
+    "refer": [
+      "list.html"
+    ]
+  },
+  "list.html": {
+    "resources": [
+      "img/first.jpg",
+      "img/list_bg.png",
+      "img/jian1.png",
+      "img/my.jpg",
+      "img/car.png",
+      "img/car.jpg",
+      "js/rem.js",
+      "bottom.html",
+      "icons/iconfont.woff",
+      "js/iscroll.js",
+      "icons/iconfont.css",
+      "img/car_bg.png",
+      "img/more.jpg",
+      "js/touch.min.js",
+      "img/kind.jpg",
+      "css/reset.css",
+      "css/bottom.css",
+      "js/zepto-1.1.6.min.js",
+      "car.html",
+      "detail.html"
+    ],
+    "refer": [
+      "car.html",
+      "detail.html"
+    ]
+  },
+  "car.html": {
+    "resources": [
+      "img/delet.png",
+      "js/iscroll.js",
+      "icons/iconfont.css",
+      "js/touch.min.js",
+      "js/rem.js",
+      "bottom.html",
+      "img/jiesuan.png",
+      "css/reset.css",
+      "js/zepto-1.1.6.min.js",
+      "css/bottom.css",
+      "list.html",
+      "img/first.jpg",
+      "img/my.jpg",
+      "img/car.jpg",
+      "img/more.jpg",
+      "img/kind.jpg",
+      "myshow.html"
+    ],
+    "refer": [
+      "list.html",
+      "myshow.html"
+    ]
+  },
+  "detail.html": {
+    "resources": [
+      "js/swiper.animate1.0.2.min.js",
+      "img/youjian.png",
+      "img/houtui.jpg",
+      "css/animate.css",
+      "js/swiper-3.3.1.jquery.min.js",
+      "img/i.png",
+      "css/swiper-3.3.1.min.css",
+      "detail2.html",
+      "list.html",
+      "js/iscroll.js",
+      "js/touch.min.js",
+      "js/rem.js",
+      "css/reset.css",
+      "js/zepto-1.1.6.min.js",
+      "car.html"
+    ],
+    "refer": [
+      "detail2.html",
+      "list.html",
+      "car.html"
+    ]
+  },
+  "detail2.html": {
+    "resources": [
+      "detail.html",
+      "css/animate.css",
+      "css/swiper-3.3.1.min.css",
+      "js/swiper.animate1.0.2.min.js",
+      "js/iscroll.js",
+      "js/swiper-3.3.1.jquery.min.js",
+      "js/touch.min.js",
+      "js/rem.js",
+      "css/reset.css",
+      "js/zepto-1.1.6.min.js"
+    ],
+    "refer": [
+      "detail.html"
+    ]
+  },
+  "myshow.html": {
+    "resources": [
+      "img/user.jpg",
+      "list.html",
+      "js/touch.min.js",
+      "js/rem.js",
+      "bottom.html",
+      "css/reset.css",
+      "js/zepto-1.1.6.min.js",
+      "css/bottom.css"
+    ],
+    "refer": [
+      "list.html"
+    ]
+  }
+}

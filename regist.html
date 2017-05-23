@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="css/reset.css">
+		<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+		<script type="text/javascript" src="js/touch.min.js"></script>
+		
+		<style type="text/css">
+			body{background: #f3eff0;}
+			
+			header{background: #a90506;height: 0.89rem;font: 0.36rem/0.89rem "微软雅黑";color: #fff;text-indent: 1.69rem;}
+			header a{width: 0.53rem;height: 0.4rem;background: url(img/jian.png);margin:0.25rem 0 0 0.23rem ;}
+			section{margin: 0.3rem;width: 5.8rem;}
+			section .txt,section .psd{height: 0.87rem;border-radius: 0.07rem;width: 5.8rem;margin-bottom: 0.3rem;font: 0.25rem/0.87rem "微软雅黑";text-indent: 1.5rem;}
+			section .tip{height: 0.46rem;font: 0.3rem/0.46rem "微软雅黑";color: #f00;text-indent: 0.3rem;}
+			
+			.box{position: relative;}
+			.box label{height: 0.87rem;position: absolute;display: block;font: 0.25rem/0.87rem "微软雅黑";margin-left: 0.22rem;}
+			
+			.regist{height: 0.92rem;display: block;width: 5.79rem;border-radius: 0.07rem;background: url(img/regi1.png);text-indent:-99rem;background-size: cover;margin-top: 1.52rem;}
+		</style>
+	</head>
+	<body>
+		<header>
+			<a href="login.html" class="fl"></a>
+			用户注册
+		</header>
+		<section>
+			<div class="box">
+				<label>账户名称：</label>
+				<input type="text" placeholder="请输入账户" class="txt"/>
+			</div>
+			
+			<div class="box">
+				<label>登录密码：</label>
+				<input type="password" placeholder="请输入密码" class="psd psd1"/>
+			</div>	
+				
+			<div class="box">
+				<label>确认密码：</label>
+				<input type="password" placeholder="请输入密码" class="psd"/>
+			</div>	
+				
+			<div class="tip"></div>
+			
+			<button class="regist">注册</button>
+		</section>
+	</body>
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript">
+		$(".regist").on("tap",function() {
+			if ($(".txt").val()!='' && $(".psd").val()!='') {
+				$.ajax({
+					url:" http://datainfo.duapp.com/shopdata/userinfo.php",
+					type:"get",
+					dataType:"JSON",
+					data:{
+						status:"register",
+						userID:$(".txt").val(),
+						password:$(".psd1").val()
+					},
+					success:function(data) {
+						
+						if (data==0) {
+							$(".txt").val("");
+							$(".psd").val("");
+							$(".tip").html("用户名重名，请重新注册！")
+						}
+						
+						if (data==2) {
+							$(".txt").val("");
+							$(".psd").val("");
+							$(".tip").html("数据库报错！")
+						}
+						
+						if (data==1) {
+							$(".tip").html("2s后跳转到登录界面");
+							setTimeout(function() {
+								window.location.href='login.html';
+							},2000)
+						}
+						console.log(data);
+					}
+				})
+				
+			}else{
+				$(".tip").html("输入不能为空，请重新登录！")
+			}
+			
+			
+		})
+		
+		$(".regist").on("blur",function() {
+			$(".tip").html("")
+		})
+	</script>
+</html>

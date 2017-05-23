@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/swiper-3.3.1.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/animate.css"/>
+		<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+		<script type="text/javascript" src="js/touch.min.js"></script>
+		<script src="js/swiper-3.3.1.jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper.animate1.0.2.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style type="text/css">
+			.swiper-pagination-bullet{width: 0.2rem;height: 0.2rem;}
+			
+			.aa{background: url(img/start2.png) no-repeat 0 0;background-size: 100vw 100vh;width: 100vw;height: 100vh;}
+			.bb{background: url(img/start3.png) no-repeat 0 0;background-size: 100vw 100vh;width: 100vw;height: 100vh;}
+			.cc{background: url(img/start4.png) no-repeat 0 0;background-size: 100vw 100vh;width: 100vw;height: 100vh;}
+			.dd{background: url(img/start5.png) no-repeat 0 0;background-size: 100vw 100vh;width: 100vw;height: 100vh;}
+			.ee{background: url(img/start6.png) no-repeat 0 0;background-size: 100vw 100vh;width: 100vw;height: 100vh;position: relative;}
+			button{display: block;position: absolute;top: 7.8rem;left: 1.76rem; width: 2.88rem;height: 0.95rem;background: none;}
+		</style>
+	</head>
+	<body>
+		<div class="swiper-container out">
+		    <div class="swiper-wrapper inner">
+		        <div class="swiper-slide aa "></div>
+		        <div class="swiper-slide bb"></div>
+		        <div class="swiper-slide cc"></div>
+		        <div class="swiper-slide dd"></div>
+		        <div class="swiper-slide ee">
+		        	<button></button>
+		        </div>
+		    </div>
+		    <div class="swiper-pagination"></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript">
+			window.onload=function(){
+			    setTimeout(function() {
+			    	var mySwiper = new Swiper ('.swiper-container', {
+				    direction: 'horizontal',
+				     pagination: '.swiper-pagination',
+				    
+				   	onInit: function(swiper){ //Swiper2.x的初始化是onFirstInit
+			    	swiperAnimateCache(swiper); //隐藏动画元素 
+			    	swiperAnimate(swiper); //初始化完成开始动画
+					  }, 
+					  onSlideChangeEnd: function(swiper){ 
+					    swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
+					  } 
+				    })  
+			    },100)
+			          
+				$("button").on("tap",function() {
+					window.location.href="list.html";
+				})
+				
+			}
+		</script>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<script>window.PointerEvent = void 0</script>
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="icons/iconfont.css" />
+		<link rel="stylesheet" href="css/bottom.css" />
+		<style type="text/css">
+			html,body{height: 100%;}
+			body{background: #f3f4f6;display: flex;flex-direction: column;}
+			header{background:url(img/car_bg.png);height: 0.87rem;font: 0.36rem/0.87rem "微软雅黑";color: #fff;position: relative;text-align: center;}
+			header a{width: 1.07rem;height: 0.56rem;background: url(img/jiesuan.png);background-size: cover;position: absolute;top:0.15rem;right: 0.2rem;}
+			nav{height: 0.9rem;background: #747474;}
+			nav div{font: 0.29rem/0.9rem "微软雅黑";color: #fff;margin: 0 auto;width: 6rem;}
+			.sp1{color: #ac1a1a;}
+			
+			section{flex: 1;overflow: hidden;}
+			section li{height: 1.76rem;border-bottom: 0.02rem #cbcbcb solid;padding: 0.27rem 0.25rem 0.30rem 0.32rem;position: relative;background: #fff;}
+			.zuoimg{border: 1px #bababa solid;width: 1.72rem;height: 1.72rem;}
+			.con{width: 3.83rem;height: 1.72rem;}
+			.con .p1{font: 0.3rem/0.4rem "微软雅黑";width: 3.22rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+			.con .p2,.con .p3,.con .p4{font: 0.3rem/0.4rem "微软雅黑";}
+			button{width: 0.57rem;height: 0.42rem;background: #ababab;border-radius: 0.09rem;color: #fff;text-align: center;font: 0.3rem/0.42rem "微软雅黑";}
+			.txt{height: 0.42rem;border-radius: 0.09rem;width: 0.76rem;text-align: center;font: 0.2rem/0.42rem "微软雅黑";}
+			.p4 span{display: inline-block;position: relative;height: 0.42rem;}
+			.p4 span .pre,.p4 span .next,.p4 span .txt{position: absolute;top: 0.1rem;left: 0;}
+			.p4 span .txt{left: 0.72rem;}
+			.p4 span .next{left: 1.63rem;}
+			.delet{width: 0.26rem;height: 0.4rem;background: url(img/delet.png);position: absolute;right: 0.25rem;top: 0.26rem;background-size: cover;}
+		</style>
+	</head>
+	<body>
+		<header>
+			购物车
+			<a href="###"></a>
+		</header>
+		
+		<nav>
+			<div>
+				商品数量：
+				<span class="sp_t"></span>
+				应付总额（不含运费）：
+				<span class="sp1 span_tol"></span>
+			</div>
+		</nav>
+		
+		<section><ul></ul></section>
+		
+		
+		<footer></footer>
+	</body>
+	<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+	<script type="text/javascript" src="js/touch.min.js"></script>	
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var myScroll=0;
+			
+			$("footer").load("bottom.html",function() {});
+			
+			function quedel() {
+				var msg = "您真的确定要删除吗？\n\n请确认！";
+				if (confirm(msg)==true){
+					return true;
+				}else{
+					return false;
+				}
+			}
+			
+			chakan();
+			function chakan() {
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getCar.php",
+					type:"get",
+					dataType:"jsonp",
+					data:{
+						userID:"yuanzishan@521"
+					},
+					success:function(data) {
+//						console.log(data);
+						var attr='';
+						var total=0;
+						var tonumber=0;
+						
+						for (var i = 0; i < data.length; i++) {
+							attr+='<li><div class="clear"><img src="'+data[i].goodsListImg+'" class="fl zuoimg"/><div class="con fr"><div class="delet" goodsid="'+data[i].goodsID+'"></div><p class="p1">'+data[i].goodsName+'</p><p class="p2">'+data[i].className+'</p><p class="p3">单价：<span class="sp1">￥'+data[i].price+'</span></p><p class="p4">数量：<span><button class="pre" goodsid="'+data[i].goodsID+'">-</button></span><span><input goodsid="'+data[i].goodsID+'" type="text" class="txt" value="'+data[i].number+'" /></span><span><button class="next" goodsid="'+data[i].goodsID+'">+</button></span></p></div></div></li>';
+							
+							total+=Number(data[i].price)*Number(data[i].number);
+							tonumber+=Number(data[i].number);
+						}
+						
+						$("section ul").html(attr);
+						myScroll=new IScroll('section');
+						myScroll.refresh();
+						
+						if (data) {
+							$(".sp_t").html(tonumber);
+							$(".span_tol").html(total);
+							$(".bottomCom li span").html(tonumber);
+						}else{
+							$(".sp_t").html("0");
+							$(".span_tol").html("0");
+							$(".bottomCom li span").html("0");
+						}
+						
+						
+						function delet(goid){
+							$.ajax({
+								url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+								type:"get",
+								dataType:"json",
+								data:{
+									userID:"yuanzishan@521",
+									goodsID:goid,
+									number:0
+								},
+								success:function(data) {
+									chakan();
+								}
+							})
+						}
+						
+						function update(goid,num){
+							$.ajax({
+								url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+								type:"get",
+								dataType:"json",
+								data:{
+									userID:"yuanzishan@521",
+									goodsID:goid,
+									number:num
+								},
+								success:function(data) {
+									chakan();
+								}
+							})
+						}
+						
+						
+						
+						$(".delet").on("tap",function() {
+							if(quedel()){
+								delet ($(this).attr("goodsid"));
+							}
+						})
+						
+						
+						$(".pre").on("tap",function() {
+							var num=1;
+							var txt=$(this).parent().siblings().eq(0).children(".txt");
+							if (Number(txt.val())>1) {
+								txt.val(Number(txt.val())-1);
+								update ($(this).attr("goodsid"),txt.val());
+							}else{
+								if(quedel()){
+									delet ($(this).attr("goodsid"));
+								}
+							}
+						})
+						
+						$(".next").on("tap",function() {
+							var num=1;
+							var txt=$(this).parent().siblings().eq(1).children(".txt");
+							if (Number(txt.val())<20) {
+								txt.val(Number(txt.val())+1);
+								update ($(this).attr("goodsid"),txt.val());
+							}else{
+								delet ($(this).attr("goodsid"));
+							}
+						})
+						
+						$(".txt").on("keyup",function() {
+							if ($(this).val().match(/^[0-9]*$/g) && Number($(this).val())<=200 ) {
+								if (!$(this).val()=='') {
+									if ($(this).val()=="0") {
+										$(this).val("");
+										alert("至少请输入1件。");
+									}else{
+										update ($(this).attr("goodsid"),$(this).val());
+									}
+								}
+							}else{
+								$(this).val("");
+								alert("至少请输入200以内的正确的数字。")
+							}
+						})
+					}
+				})
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+		})
+	</script>
+</html>

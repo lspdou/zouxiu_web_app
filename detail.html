@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, 
+initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title></title>
+		<script>window.PointerEvent = void 0</script>
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/swiper-3.3.1.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/animate.css"/>
+		<script type="text/javascript" src="js/zepto-1.1.6.min.js"></script>
+		<script type="text/javascript" src="js/touch.min.js"></script>
+		<script src="js/swiper-3.3.1.jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper.animate1.0.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			html,body{height: 100%;}
+			body{background: #f3f4f6;display: flex;flex-direction: column;}
+			header{background:url(img/car_bg.png);height: 0.87rem;font: 0.36rem/0.87rem "微软雅黑";color: #fff;position: relative;text-align: center;}
+			header a:nth-child(1){width: 0.61rem;height: 0.87rem;background: url(img/houtui.jpg);background-size: cover;position: absolute;left: 0;display: block;}
+			header a:nth-child(2){width: 1.07rem;height: 0.56rem;background: url(img/car.png);background-size: cover;position: absolute;top:0.15rem;right: 0.2rem;}
+			section{flex: 1;}
+			
+			.inner{height: 4.21rem;}
+			.swiper-slide img{width: 2.92rem;height: 3.67rem;margin: 0 auto !important;display: block;}
+			section .swiper-pagination{width: 0.98rem !important;height: 0.41rem;background: #bcbcbc;border-radius: 0.3rem;left: 45% !important;bottom: 0 !important;}
+			.swiper-pagination-bullet{margin: 0.14rem 0.05rem !important;width: 0.08rem;height: 0.08rem;}
+			.p1{font: 0.3rem/0.55rem "微软雅黑";text-align:center;width: 90%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+			.p2{width: 90%;margin: 0 auto;display: flex;}
+			.p3{width: 90%;margin: 0 auto;font: 0.3rem/0.55rem "微软雅黑";}
+			.p2 span:nth-child(1){font: 0.23rem/0.53rem "微软雅黑";color: #d60f14;flex: 0.2;}
+			.p2 span:nth-child(2){font: 0.23rem/0.53rem "微软雅黑";color: #878787;text-decoration: line-through;}
+			
+			
+			
+			nav{height: 1rem;background: #fff url(img/i.png) no-repeat 0 0;text-align: center;font: 0.28rem/1rem "微软雅黑";background-size:0.7rem 1rem;}
+			
+			nav img{height: 1rem;}
+			footer{background:#a3a3a3;height: 0.87rem;font: 0.36rem/0.87rem "微软雅黑";color: #fff;text-align: center;}
+			footer button{margin:0.03rem auto;height: 0.8rem;width: 4.37rem;background:#a31716;font: 0.29rem/0.8rem "微软雅黑";color: #fff;text-align: center;display: block;border-radius: 0.1rem;}
+		</style>
+	</head>
+	<body>
+		<header>
+			<a class="goback"></a>
+			商品详情
+			<a href="car.html"></a>
+		</header>
+		<section>
+			
+		</section>
+		
+		<nav>
+			查看商品详情
+			<img src="img/youjian.png" class="fr"/>
+		</nav>
+		
+		
+		<footer>
+			<button>添加到购物车</button>
+		</footer>
+	</body>	
+	<script type="text/javascript" src="js/rem.js"></script>
+	<script type="text/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript">
+		function GetQueryString(name)
+		{
+		     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}
+		
+		$(".goback").on("tap",function() {
+			window.history.go(-1);
+		})
+		
+		$("footer button").on("tap",function() {
+			$.ajax({
+				url:"http://datainfo.duapp.com/shopdata/updatecar.php",
+				type:"get",
+				dataType:"json",
+				data:{
+					userID:"yuanzishan@521",
+					goodsID:GetQueryString("goodsid"),
+					number:1
+				},
+				success:function(data) {
+					console.log(data);
+//					window.location.href="car.html";
+				}
+			})
+		})
+		
+		$("nav").on("tap",function() {
+			window.location.href='detail2.html?goodsid='+GetQueryString("goodsid");
+		})
+		
+		myajax ();
+		function myajax () {
+				$.ajax({
+					url:"http://datainfo.duapp.com/shopdata/getGoods.php?callback=?",
+					type:"get",
+					dataType:"JSONP",
+					data:{
+						goodsID:GetQueryString("goodsid")
+					},
+					success:function(data) {
+						
+						console.log(data);
+						console.log(JSON.parse(data[0].imgsUrl).length);
+						
+						
+						var imgleth=JSON.parse(data[0].imgsUrl).length;
+						
+						if (data!=0) {
+							var attr='';
+							if (data[0].discount=="0") {
+								attr+='<div class="swiper-container out"><div class="swiper-wrapper inner">'
+								for (var i = 0; i<imgleth; i++) {
+									attr+='<div class="swiper-slide"><img src="'+JSON.parse(data[0].imgsUrl)[i]+'" /></div>';
+								}
+								attr+='</div><div class="swiper-pagination"></div></div><p class="p1">'+data[0].goodsName+'</p><p class="p2"><span class="sp1">￥'+data[0].price+'</span><span class="sp2">￥'+data[0].price+'</span></p><p class="p3">购买人数：'+data[0].buynumber+'</p>';
+								
+							}else{
+								attr+='<div class="swiper-container out"><div class="swiper-wrapper inner">'
+								for (var j = 0; j < imgleth; j++) {
+									attr+='<div class="swiper-slide"><img src="'+JSON.parse(data[0].imgsUrl)[j]+'" /></div>';
+								}
+								attr+='</div><div class="swiper-pagination"></div></div><p class="p1">'+data[0].goodsName+'</p><p class="p2"><span class="sp1">￥'+(Number(data[0].price)*Number(data[0].discount)/10).toFixed(2)+'</span><span class="sp2">￥'+data[0].price+'</span></p><p class="p3">购买人数：'+data[0].buynumber+'</p>';
+							}
+							
+							console.log(attr);
+							$("section").html(attr);
+							
+							var mySwiper = new Swiper ('.swiper-container', {
+						    direction: 'horizontal',
+						    pagination: '.swiper-pagination',
+						    loop:true,
+						    
+						   	onInit: function(swiper){ //Swiper2.x的初始化是onFirstInit
+						    	swiperAnimateCache(swiper); //隐藏动画元素 
+						    	swiperAnimate(swiper); //初始化完成开始动画
+							}, 
+							onSlideChangeEnd: function(swiper){ 
+							    swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
+							} 
+					    })  
+							
+							
+							
+							
+							
+						}else{
+							$("section").html("不好意思！数据丢失了，请访问其他的分类！！！！");
+						}
+						
+							
+					}
+					
+					
+				})
+			}
+	</script>
+</html>
